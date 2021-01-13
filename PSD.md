@@ -15,7 +15,7 @@
 - Document the behaviour of a system
 - Demonstrate that a system meets its specification
 
-**Scales of testing:*
+**Scales of testing:**
 - Unit tests
 - Integration tests
 - Acceptance \(or system\) tests
