@@ -15,7 +15,7 @@
 - Document the behaviour of a system
 - Demonstrate that a system meets its specification
 
-**Scales of testing:*
+**Scales of testing:**
 - Unit tests
 - Integration tests
 - Acceptance \(or system\) tests
@@ -28,7 +28,7 @@ _Acceptance tests_ : Formal description of the behavior of a software product, g
 
 _Refer to week 17 slides for Behaviour Driven Development life-cycle diagram_
 
-**Life-cycle for feature development:*
+**Life-cycle for feature development:**
 - Features/user stories
 - \-\> Scenarios
 - \-\> Steps
@@ -38,7 +38,7 @@ _Refer to week 17 slides for Behaviour Driven Development life-cycle diagram_
 
 _Step Functions_ : functions created in the language of the system to represent steps in a user story
 
-**Step types in scenarios:*
+**Step types in scenarios:**
 - Given steps describe how to set up the test case fixture before the test case is executed
 - When steps describe the actions to be taken during the test case itself
 - Then steps describe the assertions that are made about the state of the system and/or output at the end of the test case
@@ -49,7 +49,7 @@ _Step Functions_ : functions created in the language of the system to represent 
 - Create tests in BDD engine
 - BDD engine produces test report
 
-**Example BDD frameworks:*
+**Example BDD frameworks:**
 - JBehave \(Java\)
 - Behave \(Python\)
 - Cucumber \(Ruby, Python, Java\.\.\.\)
@@ -58,11 +58,11 @@ _Step Functions_ : functions created in the language of the system to represent 
 
 _Examples of testing can be found in week 17 slides_
 
-**Where to implement step functions:*
+**Where to implement step functions:**
 - On the API
 - At the 'system' interface e.g user interface or REST API
 
-**Good practise for BDD:*
+**Good practise for BDD:**
 - Keep scenarios \(like any other test case\) short
 - Keep individual steps short
 - Comply with the AAA convention
@@ -111,7 +111,7 @@ A BDD engine can map scenarios to step definitions in the system language.
 
 In Behaviour-Driven Development (BDD), the behaviour of the required software is given as a collection of example interactions with the system, expressed using natural language sentences organised around a “Given-When-Then” structure.
 
-**Issues with BDD*
+**Issues with BDD**
 - Maintenence challenges
 - Duplication in specification
 - Its use changes the team’s traditional approach to software development, and that can be challenging
@@ -121,19 +121,19 @@ _BDD is used more in private organizations than in other types of organization._
 
 "BDD enables teams to write standard tests that are more expressive.”
 
-**Benefits of BDD*
+**Benefits of BDD**
 - Software specifications are expressed in domain-specific terms, and thus can be easily understood by end users
 - Improves communication between various project stakeholders
 - Specifications can be executed to confirm correctness or reveal problematic software behaviour\(s\)
 - Code intention can be easily understood by maintenance developers
 
-**Maintenance challenges*
+**Maintenance challenges**
 - _Size of BDD Suites_ : To provide context for the main-tenance challenges reported, we asked for information about the typical sizes of the BDD suites used and managed by ther espondents. Clearly, the maintenance challenges reported are likely to be of less significance if typical suites contain numbers of scenarios \(i.e., examples\) that can be managed by hand
 - Specifications can be hard to comprehend
 - It can be hard to locate sources of faults, especially in large BDD suites
 - It can be difficult to change specifications for the purpose or fault correction, accommodating new requirements, or adapting them to new environment
 
-**Duplication challenges*
+**Duplication challenges**
 - The process of duplication detection and management canchange the desired software behaviour
 - Necessitates changes in several places in the suite duringcmaintenance and evolution
 - It is hard to use existing duplicate detection and management tools to detect and manage duplicates in specifications expressed in a natural language
