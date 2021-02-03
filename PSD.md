@@ -542,7 +542,7 @@ _Due to the ease of distributing new features, A B testing is commonly used in w
 
 Increasing scale in a software or computer based system reduces the coverage and effectiveness of testing efforts, even if a proportionate number of resources are applied to testing.
 
-## Week 21 (Kindly done by Marc @csboomboom)
+## Week 20 (Kindly done by Marc @csboomboom)
 ### Software Architecture:
 
 - **Software components:**
