@@ -542,4 +542,1230 @@ _Due to the ease of distributing new features, A B testing is commonly used in w
 
 Increasing scale in a software or computer based system reduces the coverage and effectiveness of testing efforts, even if a proportionate number of resources are applied to testing.
 
+## Week 21 (Kindly done by Marc @csboomboom)
+### Software Architecture:
+
+- **Software components:**
+
+o  A software component refers to a software bundle of self-contained state and
+behaviours with well-defined interfaces.
+o Some components can perform their function, but others depend on information
+and functions provided by other components.
+o Component-oriented system: collection of interacting components that have been
+combined to realize some wider purpose.
+o  Components are useful because they allow us to reason about the large scale sub-
+systems within an overall architecture, without worrying about the behaviour of
+individual objects or their implementation in code.
+o “A component is a physical manifestation of an object that has a well-defined
+interface and a set of implementations for the interface” (Hopkins 2000).
+o  “A coherent package of software artifacts that can be independently developed and
+delivered as a unit and that can be composed, unchanged, with other components
+to build something larger” (D’Souza and Wills 1999).
+o “Components extend [object oriented] principles by strengthening the role of the
+interface and by a separate notion of component specification. Components must
+conform to a component standard” (Cheesman and Daniels 2001).
+•  **Component based software system:**
+o Example: an airline reservation system.
+
+- Booking management, payment processor, boarding pass issuer, etc. may all
+    be isolated or connected components.
+- Booking would probably be separate from other components, but payment
+    processor might be used elsewhere.
+- Boarding pass issuing might be reliant on booking management component
+    though, etc.
+- **Distinguishing between objects and components:**
+
+o  A component is a self-contained, self-controlled and evolving bundle of smaller
+scale objects.
+
+- Long lived entities that are generally deployed for the full lifetime of a
+    software system.
+- Objects may be created and destroyed throughout lifetime.
+
+o  A component oriented system can be distinguished by a middleware framework to
+mediate interactions between components.
+o The middleware can incorporate an interface definition language (IDL) that is used
+to define the published interfaces of each component in the system.
+
+- Components in component oriented system, might be distributed between
+    different environments and hosted on physically different hardware systems.
+- Can't interact as a result directly with component implementation, in the
+    same way as with an object.
+o Components are orchestrated by defining an assembly either during system
+initialisation or dynamically at run time.
+- Assembly is distinct from implementation, specifies which components will
+satisfy the required dependencies for each component in spec.
+- Normally identified by type and a release version.
+o Components in the same component oriented system may be implemented in
+several different programming languages.
+- All provide support for the same middleware and IDL.
+- Each interface provided by a component may be realized by a different
+object within the component.
+
+
+```
+o BOTH are software runtime entities with an address, state and behaviour.
+```
+- Component has a specification like objects have an associated class.
+- **Given we know that loose coupling is good, so why not make every object in the
+system a component?**
+o Mediating component interactions through a middleware imposes additional
+communication costs on top of that required for direct object to object interactions.
+- This is because messages must be encoded, transmitted and then decoded by
+the middleware.
+
+o  There are additional development costs associated with exposing an object as a
+component, since it forms part of the system’s published API.
+
+- The documentation for all of the interfaces to a component need to be
+    maintained, as it should be expected that others will need to understand how
+    to use them.
+- The interface specifications of a component cannot be readily changed
+    without disrupting the implementation of other components in the system or
+    infrastructure, which may be implemented and maintained by other software
+    teams.
+
+o  Component specification and design should be maintained as part of the system
+documentation.
+
+- Making every object a component -> system documentation effectively
+    duplicates the underlying language documentation.
+o The decision about which objects to treat as components will, to a certain extent,
+be specific to the software system under development.
+- Role of the component engineer -> which are the right objects to make
+components of.
+- **General purpose and application specific components:**
+o **General purpose components:**
+- Provide common functionality that is intended for reuse in many different
+applications.
+- Example: the card payment processing component in the reservation system
+could also be used to collect payments for duty-free shopping in an airport or
+on a plane, pay for meals in the airport restaurant, etc.
+- Are normally very well documented and stored in a component repository.
+
+o  **Application specific components:**
+
+- Implement the problem specific functionality and business logic of the
+    application.
+- The component developed to issue boarding passes at check-in for example,
+    will contain business logic specific to the job of converting the airline’s
+    reservation data into a boarding pass.
+- Are often called the application glue, because they do the job of orchestrating
+    the behaviour of the general purpose components to realise application
+    specific needs.
+o Robert Glass (2001) argued that software engineering is very good at developing
+and managing general purpose components (such as the card payment processing
+system), but quite bad at translating components that contain business logic into
+reusable components.
+- For example, the reservation component could, in principle, be adapted to
+other uses, such as booking restaurant tables, travel on buses or cinema
+tickets. However, there are often subtle technical (and socio-technical)
+reasons why the business logic of reservation booking in one domain doesn’t
+work in another context.
+
+
+- **How much functionality to expose?**
+    o For components they write themselves, a component engineer will need do decide
+       how much functionality will be provided by each component under development.
+
+o  Combining lots of functionality in a component complicate use and maintenance
+of the component:
+
+- Changing the component may effect the use of the component by many other
+    different systems.
+- The interactions between the different component interfaces will also need to
+    be carefully documented.
+o Making components very simple complicates the interaction of the component.
+- Lots of simple component tasks have to be orchestrated to achieve some
+useful functionality for the application.
+
+o  One way of mitigating this dilemma is to nest simpler components within more
+complex ones.
+
+- Then some of the functionality of a component is encapsulated (and
+    replaceable) with other sub-components.
+- This approach can also help minimise the management of interactions
+    between components at any given level of decomposition in the system.
+- **Component diagram notation:**
+o UML component diagrams are a useful notation for sketching the high level
+architectures of software systems
+- Expressing their major sub-systems as components and the interconnections
+between them as bound interfaces.
+- The figure illustrates the basic wiring notation for component diagrams.
+▪ In the diagram, a component is represented by a box with a ‘plug’
+widget stereotype. Each component has a label (in this case, A and B.
+▪ In addition, component A is providing an interface I, which is shown as
+a facet (but looks like a lollipop) stereotype attached to the component.
+
+▪  In addition, the figure shows that component B requires interface I,
+denoted by a connector, called a receptacle drawn around the facet.
+o Take careful note of the way the provision of and requirement for interfaces is
+expressed.
+
+- Facets indicate provision and receptacles indicate a requirement.
+- You may find this counter-intuitive, if for example, you think of the
+    arrangement as like an electric plug and socket, since the notation is
+    reversed. A plug (the requirer) fits into the socket (the provider) rather than
+    the other way round.
+o Notice that this has implications for what an interface means in this context
+compared to an interface in a programming language like Java.
+- An interface on a component in an assembly is more like a network port on a
+server.
+- The interface is actively being consumed. The interface is an actual entity with
+an endpoint address or identifier, just like a component. This means that if a
+component is denoted as exposing two interfaces of the same type, they will
+have different endpoint addresses at run time.
+
+
+- **Separation of concerns for component systems:**
+    o A component has a clearly defined responsibility for some function.
+
+o  A component should not be affected by changes to the implementation details of
+other components.
+•  **Design by contract:**
+o In this approach, the interface definition for a component constitutes a ‘contract’
+between the provider and the supplier of some functionality.
+
+- Meyer, who developed the Eiffel programming language, called the interface
+    documentation a ‘contract’ because it should describe the:
+       ▪ Benefits of using the interface that are offered by the providing
+          component.
+       ▪ Obligations imposed on the component that proposes to use the
+          interface.
+
+o  Meyer also defined the term ‘design by contract’ to describe the process that works
+with these very precisely documented interfaces to compose software systems.
+
+- **Preparing a component interface contract:**
+    o Document for interface can include:
+       - Visible component state.
+
+▪  Realized by the providing component.
+
+- Invariants.
+    ▪ Describe the legal states of the providing component.
+- For each method in the interface:
+    ▪ A signature.
+       - Method identifier, argument identifiers and types, method return
+          type and any exceptions that might be raised as a result of
+          improperly invoking the method.
+    ▪ Pre-conditions.
+       - Describe the required state of the providing component before the
+          method can be invoked and any restrictions on supplied
+          arguments that cannot be expressed in the method signature.
+    ▪ Post-conditions.
+       - Describe the state of the providing component after the method
+          invocation has been completed and constraints on any values
+          returned to the calling component that cannot be expressed by the
+          IDL’s type system.
+    ▪ Semantics.
+       - For example the correct sequence that methods should be invoked
+          in.
+
+▪  The visibility of each method.
+
+- To other components in the system.
+o Different parts of a contract can be expressed in different ways:
+
+
+- Method signatures are normally expressed formally in an interface definition
+    language.
+- Invariants, pre-conditions and post-conditions (collectively known as
+    *constraints) and semantics can be documented informally using source code
+    comments, but can also be expressed formally.
+       ▪ Example formal notations include the javax.validation package
+          annotations and the OCL constraint language.
+- **Checking component contracts:**
+
+o  Statically at compile time.
+o Using test frameworks such as JUnit.
+o Within the program logic at runtime.
+o By the component middleware at runtime.
+
+- **Software failures caused by incompatible components:**
+
+o  Why is all this additional documentation so important?
+
+- It certainly reinforces the argument that software engineers should be very
+    careful about choosing which objects should be treated as components, given
+    the extra overheads of documentation that seem to be involved.
+- Precise, accurate interface documentation is important to prevent the misuse
+    of components when they are reused in different assemblies.
+o The Ariane 5 disaster is commonly referenced as an example of the consequences
+of poor component specification.
+- A simple casting overflow (64 bit to 16 bit) in inertial reference software was
+reported as data to the flight control system (rather than as diagnostic
+information) causing the loss of the European Space Agencies $500 million
+launch system (Lions 1996).
+- **The problem of leaky abstractions:**
+o The Ariane 5 failure was caused by the problem of leaky abstractions, noted by
+Joel Spolsky.
+
+o  In component terms, this means that whenever two component implementations (a
+provider and a requirer of an interface) are wired together in an assembly, their
+future evolution is influenced by assumptions about:
+
+- The way that a providing interface will be utilised.
+- The way that the providing interface is realised.
+
+o  Spolsky originally argued that the leak comes from the underlying implementation
+through the abstraction.
+
+- The developer of the requiring component demands to know more about the
+    underlying provider implementation in order to build a better system.
+- However, the leakage of information goes both ways, because the provider of
+    an interface becomes constrained by assumptions as to how it is
+    implemented.
+- I was at a presentation by a Google engineer once, who suggested that "every
+    observable implementation detail of your system is your contract.
+       ▪ Examples of where assumptions might be made about incidental
+          implementation details include:
+             - The ordering of objects received from an integrator over an-
+                unordered set.
+             - The behaviour and structure of a database system - knowing how
+                queries will be evaluated can have a big impact on performance.
+
+▪  So, despite a determination to separate the interface to a component
+from its implementation, we find that they become coupled, because
+the semantics of a component’s design become part of the interface.
+
+
+```
+▪ In effect, the distinction between what an interface provides and how it
+provides it is not clear cut because often how the interface is provided
+matters to the requiring component.
+```
+▪  Consequently, safe component composition is an area of active
+research in software engineering.
+
+- **Architectural patterns:**
+    o As was covered in OOSE, design patterns address design problems at the scale of
+       class interactions.
+
+o  However, they are less suited to addressing larger-scale design problems that
+concern the overall architecture of a software system that may be distributed
+across many different computers or environments.
+o Now let's take a look at a number of architectural patterns, sometimes called
+architectural styles, that show reusable solutions to architecture level problems.
+
+- Model view control.
+- Client server.
+- Peer to peer.
+- Message oriented architecture.
+- Pipe and filter.
+- Plugin architecture.
+
+•  **Separating concerns in user interface design:**
+o Let’s consider how this principle applies to the design of interactions between a
+software system and its user.
+
+- A typical information system will be responsible for:
+
+▪  Storing user data: (text, images, video, audio, relations...)
+▪ Presenting different views of data: (tables, graphs, previews,
+thumbnails, samples, streams, downloads)
+▪ Changing the data: creation, deletion, editing, duplication...).
+o
+o The diagram illustrates the model-view-control architectural pattern which
+embodies this approach using a component diagram.
+
+
+- Architectural patterns are often easier to describe using a component diagram,
+    rather than a class diagram, as they represent the arrangement of long-lived
+    assemblies in a system, rather than the logical organisation of a small number
+    of classes.
+- The pattern is primarily concerned with a separation of concerns between:
+    ▪ The internal representation of data held in a Store and presented as a
+       Model interface.
+
+▪  The different perspectives on that (potentially complex) data model
+presented to the outside world via the View
+▪ The transformations that can be applied to the data model by the
+Control.
+
+- Notice that both the Model interface, as shown by the associations with the
+    port on the UserInterface boundary.
+
+▪  However, the Store has no dependency on the other components.
+
+- A key benefit of this approach is that each of the components has a clear
+    responsibility and can be changed without affecting the other components.
+       ▪ The component that realises the View and Control can be altered
+          without changing the underlying data representation.
+
+▪  Similarly, the implementation of the Store component can be changed
+independently of the UserInterface, so long as the replacement Store
+still provides the same Model interface.
+
+- Typically (but not necessarily) the View and Control components are collated
+    into a single top level UserInterface component, as shown on the diagram.
+
+▪  This reflects a common situation where the user interface is constructed
+using a framework or toolkit such as Swing or GTK.
+▪ In fact, the MVC pattern is so prevalent in user-interface toolkits, that it
+often isn’t necessary to consciously think about arranging the
+interaction between a user and a system in this way: the design of the
+framework enforces the conventions for you.
+
+- One consequence of this convention is that the View and Control components
+    are often coupled together.
+       ▪ Changing the Control may also mean changing how some of the model
+          is presented to the user in the View, and vice-versa.
+
+o  **Adapting the MVC pattern:**
+
+- Beyond system organisation, the pattern leaves considerable flexibility as to
+    how the internal implementation details of components and interactions
+    between components are arranged.
+- Options include, for example:
+
+▪  The retention of some model information in the View.
+▪  The View can be updated as a result of notifications from the model
+that something has changed or by the View polling the model.
+▪ The View and Control interact directly with the system’s user at the
+system boundary.
+
+- This can be useful if parts of the model don’t change very often and repeatedly
+    refreshing the view causes unnecessary work.
+- Polling can occur either as a consequence of user action or periodically.
+- The View and Control interact directly with the system’s user at the system
+    boundary.
+
+▪  This may be a human, or another software system.
+▪  The mode of interaction could be textual, graphical, video and so on.
+•  **Building a distributed system:**
+
+
+```
+o Distributed architectural patterns are concerned with the organisation of services
+within a distributed system in accordance with the particular design considerations
+that affect that system.
+```
+o  There are several reasons that a distributed system might be adopted:
+
+- Desirable to access services from different locations.
+- Infeasible to store and process data on a single computer.
+- Composed of many different software components from different
+    organisations
+
+o  Patterns:
+
+- Client-to-server.
+- Peer-to-peer.
+- **Benefits of centralising information storage and service provision:**
+
+o  The management and organising of data can be maintained (and controlled) in a
+single, consistent structure.
+o The problem of ensuring consistency between multiple copies of the same data
+item is avoided.
+o The approach provides a single, globally known, point of access to users.
+o  The management of changes to service functionality is can be undertaken in the
+server rather than in multiple clients.
+o We have seen similar benefits when applying the increase data cohesion design
+principle and the abstraction–occurrence design pattern:
+
+- In both cases we were concerned with reducing the costs of managing
+    unnecessary duplication of data or software.
+- **Client-Server architectural pattern:**
+
+```
+o
+```
+```
+o The client-server pattern embodies this philosophy at an architectural level by
+collating the management of information and services into a centralised server.
+The diagram shows a snapshot of the state of a client server system using a
+component diagram.
+```
+o  Responsibility in the system is organised as follows:
+
+- The server is responsible for providing access to information or services it
+    hosts to one or more clients through a common interface. The server is also
+
+
+```
+responsible for ensuring the integrity of the information it stores by
+validating change requests from clients.
+```
+- The client is responsible for presenting information gathered from the server to
+    end-users and for issuing commands to the server. The end-users may be
+    people or other software components.
+- **Protocols, sessions and APIs:**
+o Let’s take a closer look at how the communication works between a server and a
+client.
+
+o  Communication between clients and servers is regulated by the definition of an
+application level protocol describing the legal messages that can pass between
+clients and servers.
+o In a component oriented system, the protocol is defined by the server’s application
+programming interfaces (APIs).
+o  In a client-server system, there are two interfaces.
+
+- The first interface is used by the client to indicate that it wishes to establish a
+    new connection with the server in order to communicate.
+- The server exports a second type of interface, the main API.
+
+▪  This interface specifies the messages that can be sent once a connection
+has been established between client and server.
+▪ A separate session is established each time a client connects to the
+server.
+▪ This arrangement allows the server to handle multiple connections from
+many clients simultaneously.
+▪  The state of a connection (as perceived by the server) is maintained by
+the session responsible for that connection.
+o This arrangement is reflected in the figure.
+
+- The API is provided by the server through a port, but the actual behaviour is
+    realised by Session components nested inside the Server.
+- There is one Session component per Client, each realising an API interface
+    through a port at a different endpoint.
+- Clients a and b have already established connections and are wired to their
+    respective Session components in the assembly.
+- The InitConnection interface is provided by and realised directly by the
+    Server and is used to create new Session components.
+
+▪  Client n is wired to the InitConnection interface and a new Session has
+just been established ready to be consumed by n’s required interface.
+
+- **Examples client-server application-email:**
+    o World wide web, the subversion version control system, instant messenger
+       applications such as Skype, the FTP protocol and the public key infrastructure that
+       supports the implementation of secure communications are all examples.
+
+
+o 
+o  The diagram illustrates the architecture of a typical email system using the client-
+server pattern.
+
+- The pattern is applied between EmailClients (Thunderbird or Outlook, for
+    example) and EmailServer components. The server actually provides two
+    separate services to the client, with each following the client-server pattern
+    and implemented by sub-components:
+
+▪  **The Retrieval component** : provides facilities for the client to access
+and download emails stored on the server via the IMAP interface, an
+email retrieval protocol.
+▪  **The Transport component:** allows the client to submit emails for
+delivery to other users, via the SMTP interface, an email transport
+protocol.
+
+- The rest of the email system architecture is transparent to the client.
+    ▪ A separate SMTP interface provided by a remote Mail Transfer Client
+       (MTA) is used to forward submitted emails to their intended recipient
+       via a relay mechanism.
+    ▪ Another MTA makes use of a third SMTP interface to deliver emails to
+       the server from other users of the system.
+    ▪ From the perspective of these external MTAs, the email server is just
+       another mail transport client.
+- Notice also that it makes sense to compose these two separate functions
+    (retrieval and delivery) into a single server component, because both rely on
+    access to the internal email storage component.
+- **Thin vs Fat clients:**
+o **Thin client architectures:**
+- Classical or purists approach to the client server pattern.
+- The clients in this arrangement are sometimes referred to as dumb clients or
+terminals, because they contain very little program logic.
+- All information and as much functionality as possible is collected into the
+server.
+- The client has very limited functionality and is responsible only for issuing
+instructions to the server and displaying results.
+- Even decisions about how to present information to the user may be
+controlled by the server.
+o **Fat client architectures:**
+- Take the reverse approach, devolving much more responsibility for
+information management, validation, processing and storage to the clients
+themselves.
+
+
+- Fat client architectures can be useful because they can reduce the amount of
+    communication required between the client and the server by caching some
+    information in the client.
+- In addition, some of the processing is delegated to the clients, reducing
+    computational demands on the server.
+o There is a trade-off to be made between a thin or fat client architecture for a
+system.
+- Devolving responsibility to the clients reduces load on the server, but risks
+introducing inconsistencies in stored data and means that the clients have to
+be updated more frequently as software defects are discovered.
+- Fat client architectures have become more popular as processing capabilities
+of client environments have improved.
+
+▪  This has enabled the development of richer and more interactive client
+user interfaces, which often need to cache more information.
+•  **Limitations of client-server pattern:**
+o There are a number of limitations to the client-server pattern:
+
+- Communication between servers and clients may suffer from unacceptable
+    latency.
+
+▪  This means that it takes too long for the server to receive commands, or
+for the client to receive a response.
+
+- This problem can be mitigated by the clients caching some of the
+    information received from the server (see the description of fat
+    clients above).
+- The scalability of the architecture is bounded by the physical resources
+(computational power, network bandwidth, memory) available to the server.
+▪ This limitation is inevitable because the server acts as a single point of
+reference for all clients: the demands on the server grow as the number
+of clients increase.
+
+▪  This problem is exhibited by the ease with which websites can be
+disabled by denial of service attacks.
+▪ In the simplest case, an attacker directs as many clients as
+possible to request the same webpage from a site at the same
+time.
+
+- The single point of reference in the architecture (the server) is also a single
+    point of failure.
+       ▪ If the server is disabled, then the entire system ceases to function.
+       ▪ This problem can be mitigated by preparing fall-back servers, however,
+          this then re-introduces the problem of ensuring consistency between
+          multiple copies of the same data items or services.
+
+o  As a consequence, other architectural patterns have been developed that provide
+for greater scalability and redundancy.
+
+- **Peer-to-peer architecture pattern:**
+
+
+```
+o
+```
+```
+o A key problem with the client-server architecture is the difficulty of scaling
+resources available to the server as the number of clients grows.
+```
+- The fat client architecture is one approach to managing this problem by
+    moving more functionality into the clients.
+- The peer-to-peer architectural pattern extends this approach by moving all
+    services and data in the system into the clients themselves so that every peer
+    is both a client and a server.
+
+o  Responsibility for hosting and managing services is shared amongst all the clients.
+
+- As the demand for resources grows due to an increase in clients, there is an
+    equivalent increase in the resources available for servers, because each peer
+    fulfils both roles.
+
+o  A peer-to-peer architecture is particularly useful when a system has responsibility
+for extensive computational processing, or hosting large amounts of information,
+but is constrained by the physical capabilities of the hardware.
+•  **Example peer-to-peer application: Tor:**
+o Many people are familiar with peer-to-peer applications as a result of the
+proliferation of file sharing applications such as Knutella and the various
+implementations of the BitTorrent protocol.
+o  The Third Generation Onion Routing (Tor) project is another example of a system
+that leverages the peer-to-peer architectural pattern.
+
+- The system is used to support anonymous and untraceable communication
+    between participants on a network that the user suspects is being monitored
+    by an attacker.
+- Unlike communications sent directly over an Internet connection, Tor
+    messages are sent via a random selection of peer nodes in the Tor network.
+- Messages are wrapped in a series of layers of encryption (hence onion
+    routing) by a sender.
+- Each time a message passes through a Tor node one layer of encryption is
+    removed so that an observer of the node cannot match incoming and
+    outgoing messages.
+- Eventually all the layers of encryption are removed and the message is
+    delivered to the final recipient.
+- As more messages pass through a Tor network, it becomes increasingly
+    difficult for an observer to work out who the recipient of the message is.
+
+
+```
+o One key challenge in peer-to-peer architectures is service distribution and
+discovery: if services are distributed to any available or participating node, how do
+you know where to look for other peers offering the same service.
+```
+o  In addition, if anyone can participate in a peer-to-peer system, how do you
+determine which of the potential peers to trust?
+
+- **Peer discovery:**
+    o There are several adaptations that can be made to the peer-to-peer pattern to
+       accommodate these problems, including:
+          - Using a globally known registry to record the addresses of peers in the
+             system:
+                ▪ In this approach, a peer first queries the registry to discover what other
+                   peers are available.
+
+▪  The registry effectively acts as a super-peer, to which all other peers
+refer first for resource discovery.
+▪ Each peer maintains its own registry of known other peers that have
+previously contacted it to request resources.
+
+- Searches across the peer based network:
+
+▪  When this happens the requesting peer also reports the resources it has
+available.
+▪ When one peer performs a search for resources held by another peer it
+asks all the peers it knows for the resource.
+▪ These peers then pass on the request to their known peers until the
+resource is discovered or the request times out.
+
+- A hybrid of both patterns:
+    ▪ In this approach, several registries are deployed, each of which contains
+       a list of available peers. Each registry attempts to maintain an
+       independent and up-to-date list of available peers by querying the other
+       registries.
+
+o  All of these styles involve trade-offs.
+o The use of a globally known registry shares some of the limitations of the client-
+server pattern:
+
+- If the registry becomes unavailable then none of the peers will be able to
+    discover new peers that might have the resources they need.
+
+o  On the other hand, the peer based search has no guarantee of finding the required
+resources if the search times out before the right peer is reached.
+o The hybrid approach mitigates but does not eliminate the disadvantages of the
+other two approaches while introducing significant additional architectural
+complexity.
+
+- **Information processing patterns:**
+
+o  Information processing patterns address challenges of efficient information
+management within a system.
+o This may be for processing large amounts of data or for supporting effective
+coordination between components.
+o  The patterns we will look at are:
+
+- Message oriented architecture.
+- Pipe and filter.
+- **Disadvantages of synchronous communication mechanisms:**
+o We have ignored issues of how messages are passed between components, leaving
+this detail to the component middleware.
+
+o  We have also assumed that message passing is largely synchronous and
+instantaneous.
+
+
+```
+o Sometimes these assumptions are inappropriate for inter-component
+communication because:
+```
+- Underlying communication channels may be unreliable or subject to delays
+    that disrupt the expected flow of computation in a component.
+- The client must choose which components will provide information for a
+    computation before processing begins.
+       ▪ Only a single request can be made at a time.
+
+▪  This means that the minimum time for the computation is typically a
+factor of the number of information requests made.
+
+- Components are forced to request information from other components in a
+    pre-determined sequence because they need to wait for a response from each
+    component in turn.
+
+▪  However, some applications may not need responses from every
+request, provided a sufficient number of responses are obtained.
+
+- The overall system design cannot exploit computational parallelism to
+    improve response time.
+       ▪ A component may be unnecessarily idle while it waits for a message to
+          be delivered to another component.
+
+▪  It could be handling messages received from other components, for
+example.
+o In summary, synchronous communication can unnecessarily constrain design
+flexibility for certain types of computation.
+o  Consider, for example a component developed to search for the best possible price
+for a home insurance premium, given some constraints (property value, contents
+value, minimum excess, whether the purchaser wants legal cover and so on).
+o The component needs to contact a large number of insurance providers and request
+a quotation according to the specifications of the customer.
+o  The component will then select the top five quotations and present them to the
+customer for review.
+•  **Synchronous vs asynchronous communication: example:**
+o 
+o  The diagram illustrates the communication between the client component and the
+insurance providers if the client makes its requests using synchronous
+communication.
+
+
+```
+o The time taken to identify the best quotation will be equal to the sum of times
+taken by each of the individual insurance providers polled.
+```
+o  In addition, if any of the providers are unable to provide a response (due to
+network failure, for example) additional time is added to the duration of the
+computation without benefit.
+o The synchronous communication also means that the component cannot deal with
+other quotation requests until the first one is completed.
+o
+o Alternatively, the quotation component could contact each of the brokers
+asynchronously, as illustrated in the diagram.
+o In this arrangement, the client sends a request to each insurance provider without
+waiting for an immediate reply.
+o  Once all the requests have been sent, the quotation component then waits for a
+minimum number of insurance providers to respond with a quotation and then
+sends an initial estimate to the customer.
+o As further quotations arise the estimate can be updated as required.
+
+- **Message oriented architecture pattern:**
+
+o  The Message Oriented architectural (MOA) pattern provides a basis for general
+asynchronous communication between components.
+
+- In the pattern, all communication occurs as discrete messages that pass
+    through a message bus. The bus routes messages to the appropriate client
+    based on a routing policy.
+- This pattern is known by two other names, depending on which parts of the
+    architecture are most significant for the design problem:
+       ▪ The Message Driven pattern because all internal computation in a
+          component is the result of receiving a message from another
+          component.
+
+▪  The Message Broker pattern, because a broker is responsible for
+deciding which component receives which message.
+
+
+## •
+
+o  The diagram illustrates the pattern. The message bus is modelled as a single
+component that provides two interfaces to clients:
+
+- IBroker is used to send messages to other clients via the bus.
+- IQueue is used to read messages from the bus that have been sent specifically
+    to the client by other clients.
+
+o  The use of standard interfaces ensures that all messages sent via the bus comply
+with a prescribed format.
+
+- This means that every client will know how to parse the structure of a message,
+    even though it may not be able to interpret the content.
+o The figure also shows the internal structure of the MessageBus component.
+- Messages for individual clients are stored in a Queue such that there is one
+Queue maintained per client.
+- Each queue realises the IQueue interface provided to the appropriate client by
+the MessageBus.
+- Typically, the client will consume and process messages from the Queue as
+quickly as it can, using the Queue as a buffer when it experiences a heavy
+load of messages.
+- The Client will also normally block once it has processed all available
+messages in its Queue.
+o Separately, clients can send messages using the IBroker interface.
+- This interface is realised by the Broker sub-component.
+- When a message arrives at the interface the Broker decides which Queue the
+message should be added to, normally, based on the intended end client.
+- The broker may not be able to deliver a message, if a queue is full, for
+example, or because the message does not have a valid destination.
+
+
+- In this situation, the broker is responsible for handling the message, either by
+    dropping the message, or by notifying the client that the message wasn’t
+    valid (by leaving a message in the sender’s queue).
+- **Configuring message oriented architectures:**
+o There is considerable flexibility in influencing the behaviour of a message oriented
+architecture through two mechanisms:
+- The relationships between queues and clients:
+
+▪  Several clients may be connected to the same queue, for example, if the
+number of messages added to the queue is typically too much for a
+single client to handle.
+▪ Alternatively, a client may listen for messages on several different
+queues.
+▪  For example, a client may maintain separate queues for normal
+and exception messages.
+
+- The policy applied by the broker to distributing messages:
+    ▪ The broker may choose between different queues depending on
+       different factors.
+
+▪  The broker might choose the queue based on a specific intended
+recipient, the queue containing the least messages, or the message
+type, for example.
+
+- You may have noticed that the broker pattern is structurally similar to the
+    Load Balancing enterprise pattern, except that the broker decides where to
+    send a request based on load.
+- **Example: Stock control system:**
+
+```
+o
+```
+o  Let’s consider an example application of the pattern: a stock control system for a
+large supermarket chain.
+o The diagram illustrates the flow of stock between the different geographical
+locations managed by the stock control system.
+o The supermarket chain has a large number of stores, each with a limited capacity
+for holding stock.
+
+
+```
+o The diagram illustrates the architecture of the message oriented stock control
+system.
+```
+o  The architecture shouldn’t come as too much of a surprise: every component,
+regardless of whether it is handling store, distribution centre or supplier
+functionality.
+o The chain maintains a number of regional distribution centres for holding larger
+amounts of stock on behalf of the stores in their area.
+o  When the stock of some particular item drops below a certain level in store, the
+store management requests additional supplies from the distribution centre.
+o The distribution centres receive stock directly from suppliers.
+
+- In some situations stock cannot be sent directly from a supplier to the
+    appropriate distribution centre.
+- In this case, stock is requested from the distribution centre that can receive
+    stock from the available supplier.
+
+```
+o The diagram illustrates the architecture of the message oriented stock control
+system.
+```
+o  The architecture shouldn’t come as too much of a surprise: every component,
+regardless of whether it is handling store, distribution centre or supplier
+functionality.
+o Each component has it’s own queue of messages maintained by the MessageBus.
+o In addition, each component can send a message to any other component via the
+broker. In practice, only the following messages are required:
+
+- The system ensures that stock is delivered to stores through message passing:
+    ▪ Store to RDC requests for new supplies.
+    ▪ RDCs to Suppliers requests for new stock to be manufactured and
+       delivered.
+
+▪  Suppliers to RDCs notifications when the requested products will be
+delivered.
+▪ Between RDCs requesting stock to be transferred as available and
+notifications when that stock will be delivered.
+
+- **Advantages of the message-oriented architecture:**
+
+o  Communications security is centralised by ensuring that all messages pass through
+secured channels on the message bus.
+
+
+```
+o The broker can be configured dynamically to route messages according to the state
+of the application.
+```
+o  The message bus provides a central location for monitoring inter-component
+communication.
+
+- This is useful for logging interactions between components for debugging or
+    auditing, for example.
+- The structure also makes it easier to identify bottle necks or faulty
+    components, since this is typically indicated by congested queues.
+- **Sequential data processing applications:**
+o Many software applications are required to process large volumes of data,
+applying a number of transformations between input and output. Examples
+include:
+- Video and audio media transcoding, where video is decoded, potentially re-
+formatted (size, colour model etc.) and then encoded.
+- Textual analysis, where prose is checked for spelling and grammar errors in
+one language before being translated into another.
+- Inter-bank payment processing, where very large numbers of small scale
+currency transfers must undergo a series of validations before being
+approved.
+- Processing and synthesising data gathered from scientific instruments.
+▪ Raw instrument data often needs considerable re-processing and
+integration before it can be used in analyses.
+
+▪  Weather and climate data (temperature, pressure, humidity and so on),
+for example, is gathered from a variety of sources and using a
+heterogeneous range of instruments.
+
+- **Design problems:**
+    o These related applications present several design problems:
+       - Each of the steps in the transformation can take a variable amount of
+          processing time for a given data item:
+             ▪ This can result in one or more of the steps becoming an bottleneck
+                which limits the performance of the application as a whole.
+             ▪ For example, video data compression may need significant amounts of
+                buffered frame data before it can begin, even though other processes
+                such as frame re-sizing finish more quickly.
+       - Steps may need to replaced or re-ordered as the application is adapted to
+          different needs:
+             ▪ For example, a generic translation application might need to translate
+                text from French to English, English into Mandarin and so on. In
+                addition, there are different standards for correcting language grammar
+                and punctuation.
+       - It may be desirable to have a convenient means of re-using some functions in
+          combination:
+             ▪ In the translation application describe above, for example, French to
+                English and English to Mandarin components could be composed to
+                produce a French to Mandarin function.
+
+•  **The pipe and filter architectural pattern:**
+o The pipe and filter architectural pattern addresses these design problems by
+leveraging the homogeneous format of the data being processed.
+o  The diagram illustrates the basic form of the pattern.
+
+
+```
+o
+```
+o  Each transformation that must be applied to the data is implemented as a single
+component called a filter.
+o Each filter provides and implements the same interface, sometimes called the pipe.
+o The filters are then wired into a single sequential assembly called the pipeline,
+with each successive component obtaining data from a component on the left and
+passing output to the component on the right.
+o Two special components bound the pipeline.
+
+- A data source component provides input on the right and requires the pipe
+    interface.
+
+▪  Similarly, a data sink component provides the pipe interface on the
+right to accept the system’s output on the right.
+
+- Finally, a Scheduler component is responsible for deciding which of the other
+    components should execute at anyone time.
+       ▪ The Scheduler’s job is to manage load between the other components
+          so that no one component causes a bottleneck in the pipeline.
+
+▪  The Scheduler controls each component via the Control interface.
+o  The pattern satisfies the design problems described above because:
+
+- Processor time is allocated to the different filters based on load. This ensures
+    an even flow of data through the pipeline.
+- All of the filters provide and require exactly one pipe interface, so can be re-
+    ordered and composed as necessary.
+- **Variants to the basic pipe and filter model:**
+o Push or pull driven data flows.
+o Sequential or concurrent data processing filters.
+o Re-orderable or inter-changeable filters.
+
+o  Branching data filters.
+
+- **Push or pull data flow:**
+    o The push or pull driven data flows reflect two different controlling processes for
+       moving data to the pipeline, as illustrated in Figure the diagram.
+    o **Push:**
+
+
+- In the push model, data is driven into the system by an active DataProvider,
+    which submits the data to FilterA for processing.
+- The DataProvider will continue to supply data to the filter, until the Filter is
+    blocked by a full buffer.
+- FilterA will process the data and then pass the results on to FilterB.
+- This process continues until the data is written out to a passive DataSink by
+    the last filter.
+
+o  **Pull:**
+
+- The pull model is the reverse of this situation.
+- The DataRequester actively polls the last filter, FilterC for data.
+- FilterC polls FilterB in turn and the process continues until the last filter
+    polls the DataSource for data to process.
+- The results are then passed back along the request pipeline.
+o The choice of which data model to employ depends on the system for which the
+application is to be used:
+- A push data model is appropriate when the data to be processed is being
+continually generated in an unpredictable or continual way by the Provider.
+- This means that the data is fed into the pipeline as and when it becomes
+available.
+▪ Multi-media format conversion of an entire media file, or of a continual
+live stream is a good example of this situation.
+- A pull data model is more appropriate when data needs to be processed as a
+result of some external event in the data Requester.
+▪ The Requester only initiates the pipeline when it needs the data to be
+processed.
+
+
+```
+▪ Execution of a scientific experiment that integrates a large collection of
+diverse data sets is a good example of this situation.
+```
+- **Sequential or concurrent data processing:**
+
+o  The data can also be processed in different ways within each individual filter.
+o The diagram illustrates the two variants using a push-style pipeline, as described
+above.
+o
+o In a sequential pipeline, all the data submitted to the pipeline is processed by each
+filter in turn, before the data is passed on to the next filter.
+o  This means that processing is serialised: the total time taken to process.
+o
+o  In a concurrent pipeline, small amounts of data (often called chunks for text, or
+blocks for raw bytes) are fed into the pipeline as soon as they become available.
+o This means that the data sink receives the first blocks of data as soon as they are
+processed by the last filter.
+o  At first glance, it might seem that the concurrent model is always better, since it
+means that data begins arriving at the data sink earlier and if the system is
+distributed on a number of processing nodes the overall computation should end
+more quickly.
+o This may be important for certain applications that require a constant stream of
+data to be written to the data sink (live video streaming for example).
+o  However, there are many applications where it is better to process larger blocks of
+data in one go.
+
+
+```
+o Compression algorithms, for example, generally achieve a greater compression
+ratio (the size relationship between the raw and uncompressed data) if they are
+executed on larger blocks of data.
+```
+o  footnote{Informally, this is because the probability of redundancy (repeated data)
+increases as the size of the data block increases.
+
+- In practice, this means that there is a trade-off between speed of execution and
+    performance, made in terms of the size of data block operated on in the
+    pipeline.
+- **Re-orderable vs. inter-changeable filters:**
+
+```
+o
+```
+```
+o Another decision to made when designing a pipeline architecture or framework is
+the extent of flexibility that will be permitted to a pipeline constructor. Two
+possible variants are re-orderable or inter-changeable filters:
+```
+- The most flexible option is to allow the filters to be re-ordered as desired by
+    the software architect. To enable this arrangement, every single filter must
+    provide and require the same interface.
+- This flexibility means that the overall processing pipeline can be optimised by
+    re-ordering processing activity.
+- For example, in a video processing application it is quicker to crop each video
+    frame and then convert them to grey scale, as shown in the diagram.
+- If the reverse configuration is employed, computation time is wasted
+    converting regions of each frame to grey scale that will be removed anyway.
+
+```
+o A more restrictive option is to fix the ordering of filters and only permit the inter-
+change of filter implementations.
+o In this case, each filter can provide and require different interfaces.
+```
+o  Any filter can be replaced by another filter implementation that provides and
+requires the same interfaces.
+o However, the heterogeneous nature of the filter interfaces means that they cannot
+generally be re-ordered.
+o Consider, for example, an application for converting a scanned image of a page of
+book into audible speech in another language, as shown in the diagram.
+o  The filters of the system might be: optical character recognition; spell check;
+grammar check; text translation; and speech synthesizer.
+
+
+```
+o These components cannot be re-ordered and each filter requires a different form of
+input data.
+```
+o  However, the implementation of each component can be swapped as required.
+o  Again, it is possible to compromise between these two architectures, so that some
+parts of the pipeline can be re-ordered, while others require set sequences of filter
+types.
+
+- **Branching filters in pipelines:**
+
+```
+o
+```
+```
+o A final variant is to allow the use of branching filters in the pipeline, as shown in
+the diagram.
+```
+o  A branching filter can do one of two things with incoming data: replicate the data
+stream to the out-going filters; or filter each data item into one of the out-going
+branches.
+o Branches can be useful in pipelines for several reasons:
+
+- Performing ancillary functions on exact copies of data, e.g. logging
+    intermediate versions of a data set during a computation for debugging,
+    verification or auditing purposes. This means that these functions do not have
+    to be built into the filters themselves.
+- Applying two different transformations to the same incoming data source
+    simultaneously.
+       ▪ A video stream might need to be encoded for high and low quality
+          distribution, for example.
+- Separating data items into different categories for alternative processing. A
+    data stream might contain words in two different languages that need to be
+    separated and processed differently, for example.
+- **Motivation for a plugin architecture:**
+
+o  It can be difficult to predict all the required functionality for an application,
+beyond a core set of features. This may be because:
+
+- It is anticipated that new features may need to be added over time as
+    requirements change.
+- Different users of the application have different requirements:
+
+▪  Providing all the required features to all users would result in an overly
+complex system and user interface.
+
+- It is anticipated that some users will want to develop their own functionality
+    for the system:
+       ▪ Tailoring it’s features to suit their personal needs.
+- The application will run on a variety of different platforms:
+
+
+```
+▪ Some of which will not be able to support all the application’s
+functionality, or will do so in different ways.
+```
+o  A plugin architecture provides a flexible mechanism for extending the
+functionality of a software system.
+o In the pattern, an application is able to dynamically search for and load
+components that contain additional functionality into the main system.
+
+- **Plugin architectural pattern:**
+
+o  The diagram illustrates the key components in the plugin architectural pattern.
+o 
+o The main component in the in architecture is the Registry that stores the
+specification of all plugins available to the system.
+o  A plugin component normally provides a standard interface that complies with the
+requirements of the plugin architecture. This can provide:
+
+- Details of how to instantiate the plugin in the application; and/or
+- Details of how the component can be used in the application.
+
+o  The main Application can query the registry for available plugin specifications of
+a particular type.
+o When an appropriate plugin is located, a Loader component is used to instantiate
+and configure the component for use by the main application, using the
+specification supplied by the Registry.
+o  The plugin’s functionality can then be accessed via the specified interface, just like
+any other component in the system.
+o A plugin architecture is similar to a software framework that exhibits hooks and
+slots.
+
+- However, the purpose of the two are different.
+- A software framework is not an application.
+
+▪  It is a collection of utilities, libraries and infrastructures for building
+applications in a particular architectural style, or for a particular
+purpose.
+
+
+- **How flexible should a plugin architecture be?**
+    o A plugin architecture is useful for extending the functionality of a specific
+       application, not for building the whole application.
+
+o  Consequently, the range of ways in which a plugin can extend the application’s
+functionality and purpose should be tightly constrained.
+
+- An application that is built purely from plugins is in serious danger of
+    exhibiting the inner platform effect.
+
+o  Another way of expressing this is to observe that this process simply re-invents the
+Java language’s primitive mechanism of instantiating classes as objects using the
+new keyword.
+o To a certain extent this is correct, except that the programmer does not need to
+know what class will be instantiated as a plugin at runtime.
+o  In addition, creating an instance via the newInstance method is computationally
+much more expensive.
+o So, it is important to choose which classes will be implemented as plugins because
+they are better suited to being loosely coupled components, and which are core
+parts of the main application.
+
+- **Summary:**
+
+o  Software architecture helps developers to reason about the high level structure and
+key components of a software system.
+o Cheesman, John, and John Daniels. 2001. UML Components a Simple Process for
+Specifying Component-Based Software. Component Computer software Series.
+Pearson Education Inc: Addison-Wesley.
+o  D’Souza, Desmond Francis, and Alan Cameron Wills. 1999. Objects, Components
+and Frameworks with Uml: The Catalysis Approach. Object Technology Series.
+Reading, MA: Addison Wesley.
+o Hopkins, J. 2000. “Component Primer.” Communications of the ACM 43 (10):
+27 – 30.
+o  Lions, J.L. 1996. “ARIANE 5 Flight 501 Failure Report by the Inquiry Board.”
+[http://www.di.unito.it/~damiani/ariane5rep.html.](http://www.di.unito.it/~damiani/ariane5rep.html.)
+
+
 
