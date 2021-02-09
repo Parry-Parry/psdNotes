@@ -1411,13 +1411,6 @@ o The distribution centres receive stock directly from suppliers.
 - In this case, stock is requested from the distribution centre that can receive
     stock from the available supplier.
 
-```
-o The diagram illustrates the architecture of the message oriented stock control
-system.
-```
-o  The architecture shouldn’t come as too much of a surprise: every component,
-regardless of whether it is handling store, distribution centre or supplier
-functionality.
 o Each component has it’s own queue of messages maintained by the MessageBus.
 o In addition, each component can send a message to any other component via the
 broker. In practice, only the following messages are required:
