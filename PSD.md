@@ -1761,4 +1761,243 @@ o  Lions, J.L. 1996. “ARIANE 5 Flight 501 Failure Report by the Inquiry Board.
 [http://www.di.unito.it/~damiani/ariane5rep.html.](http://www.di.unito.it/~damiani/ariane5rep.html.)
 
 
+## Week 22
+
+### Maintaining source code and system design
+
+* Software is easier to alter to respond to changes in the system environment, if the source code has been carefully maintained
+* Characteristics of well\-maintained software source code include:
+	* effective use of a version control system
+	* an automated test suite
+	* a clear architecture and design
+	* a simple and consistent coding style, enforced through automation where possible
+	* appropriate use of comments and other documentation
+
+### Defining software refactoring
+
+* A key discipline for maintaining the structure of a software system as it evolves is refactoring
+* Refactoring should be an on\-going process in a software development project, alongside the introduction of new features
+* Fowler defines a refactoring as:
+	``Refactoring (noun): a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behaviour.``  
+* and goes on to define the verb form \(to refactor\) as the application of a series of refactorings
+* As we will see, refactoring often causes changes in the non\-functional properties of a system, and indeed, can also causes changes in the functional behaviour or specification
+
+### The refactoring process
+
+* Refactoring can be thought of as a form of source code cleanup, with the addition of a well defined process for performing the change
+* The process begins with the identification of opportunities to refactor
+* Fowler calls indicators of these opportunities ‘bad smells’ in the program source code
+	* A ‘bad smell’ is a pattern in the source code indicating poor structure or inappropriate coupling between modules
+* Once an opportunity to refactor is identified, it is important to create tests for the affected classes, using an automated test harness framework, such as JUnit
+* The test cases are important because they will be used to show that the functional behaviour of the refactored code has not changed as a result of applying any refactorings
+* Of course, in well maintained code, a class or package will already have a well established suite of tests that can be used for this purpose
+
+* Next the refactoring is planned, based on the guidance provided by the bad smells
+* Once the revised design has been established, it can be applied, often using automatic refactoring tools that are provided as part of many Integrated Development Environments \(IDEs\) such as Eclipse
+
+* At this point, the tests that were developed previously should be rerun
+* If the tests are successful, then it is appropriate to commit the new design and source code to the main project
+* This may involve merging the change into the main development trunk of the project source code repository
+* Having completed the refactoring, new opportunities for improving the design may also be identified
+	* For example, if extract method is applied to a method with a large body, it may then also be appropriate to move that new method to another class
+
+* If one or more of the tests fail, this indicates that the refactoring\(s\) have altered the functional behaviour of the altered class
+* It is necessary here to back out of \(reverse\) the changes 
+* Additional planning and analysis can then take place to understand what unexpected effect the refactoring\(s\) had
+* Once the slip has been established, the revised refactoring\(s\) can be applied
+* This process continues iteratively, until a refactored system passes the pre\-prepared tests
+
+### When to refactor
+
+* The first step in the refactoring process is to identify opportunities for refactoring
+* Refactoring should be treated as a parallel on\-going process, that occurs alongside other software development activities
+* This means that you should be looking for opportunities to refactor when you are:
+	* implementing new functionality
+	* correcting a defect
+	* doing a code review
+	* when you are trying to understand how a software artifact works
+* While you undertake these tasks, you should also be observant for examples of poor software design in the source code
+
+### Fowler's 'Bad Smells'
+
+#### Cloning 
+
+Duplicate code : Source code that has been cloned rather than reused makes maintenance harder. If you find a bug in the original, you have to fix all the clones as well.
+
+#### complex structures
+
+* long method : The behaviour of long sequences of instructions is harder to understand, because all of the details of the implementation are presented to the reader at once. In general, methods that can’t be read on a few lines in an editor are too long
+
+* large class : Indicates that too many responsibilities have been allocated to a single class. It is also possible that the large class contains duplicate code
+
+#### variables and parameters
+
+* long parameter list : Imposes stamp coupling on the design of the method, because each time the parameter list changes, every call of the method must also be changed. A long parameter list also indicates that a method that is used in different ways, depending on how it is called
+
+* feature envy : Indicates that a method is in the wrong class, because it obtains most of its data from another class. If either the data or the accessing method change, then so will the other
+
+* data clumps : Occurs when the same, independently sourced, data is used together in different locations in a system. This might be identifiable from duplicate parameter lists for methods, or from duplicate blocks of query method calls. Both of these examples are also indicators of cloning
+
+* primitive obsession : Indicated by a preference for using primitive data types for representing more complex values with additional semantics. This is problematic because the semantics and supplementary properties of a data type is not explicit when it is represented as a primitive value, and has to be maintained independently of the data. A date in the Gregorian calendar could be represented by three integers, for example \(one each for day, month and year\). However, this means the relationships between these values has to be maintained elsewhere in the system
+
+* temporary field : These are fields that are used as variables in method bodies, but aren’t always needed. Fields should only be used to record information about an object’s state that must persist between method calls
+
+#### making changes
+
+* divergent change : Another indicator that a class has too many responsibilities, identifiable when a single class must be altered in different ways to respond to different changes in the system’s environment. This suggests that the class has two or more different sets of responsibilities
+
+* shotgun surgery : The opposite of divergent change, identifiable when a change in the environment necessitates a number of different changes in several different classes in a system. This makes maintenance more time consuming, and easier to get wrong
+
+* parallel inheritance hierarchies : Identifiable by dependencies between two inheritance hierarchies, such that a change in one hierarchy causes a change in another, increasing coupling and maintenance costs
+
+#### control structures and polymorphism
+
+* switch statements : Indicates a reluctance to exploit object oriented polymorphism and increases maintenance costs, because each time a new option is introduced into the system, a flag and additional line must be added to the switch
+
+* refused bequest : Sometimes a sub\-class doesn’t need all of the operations provided by a super class. This means that all the methods of the super class are unnecessarily coupled to the sub\-class
+
+* alternative classes with different interfaces This is a 'smell' because it means that the benefits of object\-oriented polymorphism cannot be exploited. The two or more classes must be manually selected for use in the code
+
+#### design uncertainty 
+
+* lazy class : This can be a difficult smell to identify, given that many of the smells are about classes that do too much. However, lazy classes, that have insufficient independent responsibilities can be unnecessarily expensive to maintain
+
+* speculative generality : Although abstracting over concrete implementation details is generally a good idea, it can be tempting to attempt to move all design decisions into the configuration for a software system. At its most extreme, this phenomenon is known as the inner platform anti\-pattern, because the system is designed as a software platform that must be configured, on top of an existing software platform
+
+* incomplete library class : This is less of a smell, than a potential causes of other smells. It occurs when it is discovered that a class from a library doesn’t support all the operations needed by the client. In addition, the library class can’t be altered, because it is used in many other projects
+
+#### delegation
+
+* message chains : Occurs when a message one object accesses a data item through a series of intermediary objects. The requesting object is therefore bound to all the other objects in the chain
+
+* middle man : Occurs when one object acts as an information broker to another object, but doesn’t actually provide any information itself. There may be good reasons for this, if the broker is a proxy, for example. If the object is just passing on information, however, it may be better for the communication to occur directly
+
+* inappropriate intimacy : Also known as the object-orgy anti\-pattern. This smell is the opposite of accessing information via middlemen or chains. Instead, all objects freely interact with the properties of other objects, causing an 'orgy’ of couplings between them
+
+* data class : Classes should generally have behavioural responsibilities as well as data items. If a class lacks behaviour, this is often because the behaviour has been implemented somewhere else
+
+
+Many of the bad smells and refactoring remedies are illustrative of the principles of good design. These principles embody the adage ''good design has low coupling and high cohesion''. Unsurprisingly, refactoring is concerned with reducing the coupling and increasing the cohesion in a software application.
+
+### Excessive comments vs. self documenting code
+
+* A final bad smell described by Fowler is the excessive use of comments to explain unnecessarily complex source code
+* The comments are indicative of poor structure that can be improved through the application of refactoring\(s\)
+* This process helps to create self documenting code
+* Once the code has been refactored, its purpose and functionality become much more self-evident, reducing the need for supplementary documentation
+* This excessive documentation can be largely removed when the refactoring process is complete
+
+### Types of refactoring
+
+#### fixing methods
+
+* extract method ←→ inline method
+* replace method with method object
+
+#### moving functionality
+
+* move method, move field
+* extract class ←→ inline class
+
+#### organising data
+
+* encapsulate field
+* replace data value with object
+* replace magic number with symbolic constant
+
+#### simplifying method calls
+
+* parameterise method ←→remove parameter
+* use parameter object
+
+#### simplifying conditions
+
+* decompose conditional
+* consolidate duplicate conditional fragments
+* replace conditional with polymorphism
+
+#### reorganising classes
+
+* pull up method ←→ push down method
+* pull up field ←→ push down field
+* extract superclass
+* extract subclass
+* collapse hierarchy
+
+### Smells to refactoring
+
+| Smell           | Strategies |
+
+* duplicated code : extract method → \(pull up method, form template method\) or substitute algorithm 
+* long method : extract method → \(introduce parameter object, replace temp with query\) or replace method with method object → extract method 
+* large class : extract class, extract subclass 
+* long parameter list : replace parameter with method, preserve whole object 
+* divergent change : extract class 
+* shotgun surgery  : move method, move field, inline class 
+* feature envy  : move method, extract method 
+* data clumps :  extract class → \(introduce parameter object,preserve whole object\)          
+* primitive obsession : replace data value with object, replace type code with class, extract class, introduce parameter object
+* switch statements : replace type code with subclasses → replace conditional with polymorphism
+* parallel inheritance hierarchies : move method, move field
+* lazy class : collapse hierarchy, inline class
+* speculative generality : collapse hierarchy, inline class, remove parameter, rename method
+* temporary field : extract class, introduce null object
+* message chains : hide delegate, extract method → move method
+* middle man : remove middle man, inline method
+* inappropriate intimacy : move method, move field, extract class, hide delegate, change bidirectional association to unidirectional, replace inheritance with delegation
+* alternative classes with different interfaces : rename method, move method, extract superclass
+* incomplete library class : introduce foreign method, introduce local extension
+* data class : encapsulate field, extract method, move method, hide method
+* refused bequest : push down method, push down field, replace inheritance with delegation
+
+### Automated refactoring
+
+Many software tools, such as IDEs have integrated tool support for automatic refactoring. Eclipse, for example, supports \(contextualised\) operations for automatically:
+
+* Rename
+* Move
+* Extract Interface
+* Extract Superclass
+* Pull Up
+* Push Down
+* Extract Class
+* Change Method Signature
+* Inline
+* Introduce Parameter Object
+* Introduce Indirection
+* Infer Generic Type Arguments
+* Generalise Declared Type
+* Encapsulate Field
+
+### Limits of refactoring
+
+* the refactoring process is a powerful mechanism for managing design quality as a software application evolves
+* However, refactorings can themselves cause the software evolve and consequently can and do alter the observable behaviour of software systems
+* Refactorings can cause observable changes to a software system in either the:
+	* non\-functional properties
+	* the application programming interface \(API\) of a system
+* Refactorings which causes changes to non\-functional properties may be either beneficial or detrimental
+* A refactoring might decrease a system’s overall memory footprint, whilst simultaneously reducing the system’s response time
+* This may happen because the refactoring reduces the amount of cloning in a software system
+* Unfortunately, this may increase the number of method calls that must be made, increasing execution time for a transaction
+* These considerations are particularly important for mobile, embedded or realtime applications in which computing resources may be limited
+* However, a clear design is usually easier to tune, so that over the long term, the required non\-functional properties of a system are easier to achieve
+
+### Refactorings that alter APIs
+
+* In addition to changing non\-functional behaviour, some refactorings require that an application programming interface \(API\) to a software module be altered
+* The API is the set of public operations and attributes of one module that can be accessed by other modules in a system at runtime
+* In object\-oriented systems, every object has an API defined by the public members \(operations and attributes\) of its class
+* Changes to an API happens when:
+	* a class member is moved
+	* a class member is renamed
+	* the visibility of a class member is changed
+	* the list of parameters to an operation is changed
+	* the return type of an operation is changed
+	* the exceptions that may be raised are changed
+* This may not be a significant problem if the API is for a class that is only accessed within a software system
+* However, some APIs must be exposed to users of the system
+* Fowler refers to these as published interfaces, because they have been exposed and documented for use by external clients of the entire software system
+* Consequently, every user of the software system is coupled to the API specification
+* The version of the system used is said to be a dependency for all its users
 
