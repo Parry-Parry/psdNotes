@@ -2001,3 +2001,213 @@ Many software tools, such as IDEs have integrated tool support for automatic ref
 * Consequently, every user of the software system is coupled to the API specification
 * The version of the system used is said to be a dependency for all its users
 
+## Week 23
+
+### What can a software licence cover?
+
+* A licence is an assertion of the permitted uses of a software artifact and the conditions of use
+* A licence may cover a range of topics, including:
+	* Ownership
+    * End usage rights, such as display and performance
+    * Distribution rights, such as reproduction \(copyright\)
+    * ‘Engineering’ rights, such as disassembly, modification and incorporation in other software
+    * Warranties and liability
+
+### Roles in licensing
+
+* At the most abstract level, there are two roles in licensing:
+	* producer or provider of the artifact: wishes to receive a benefit from distribution
+	* consumer of the artifact: wants to benefit from the use of the artifact
+* Producers of software may be the original authors
+* However, there are lots of other ways that people can be involved in production
+	* For example, the notion of an owner of a copy of an artifact is distinct from that or the original author
+	* It may be important to establish in the licence who has ownership of a software copy
+* Similarly, a licence might be applied by a distributor of a software artifact who wasn’t the original author
+* A repository hosting site might impose conditions on hosting for example
+
+* On the other side, there may be several different types of consumer and a licence may address them differently
+* A licence might refer to what a customer who is acquiring software in some way may have rights to
+	* For example, the licence may state whether a customer is acquiring ownership of the copy of software, or whether they are just acquiring the right to use it for some specific purpose
+* Infrastructure engineers may be consumers of licences because they are responsible for installing and configuring software on behalf of end users
+* They may need to ensure that the environment that is configured complies with licences during this process
+
+* End\-users are affected by licences because they often describe permitted and non\-permitted uses
+	* For example, some software producers offer academic licences allowing software to be used at reduced or even no\-cost provided it is only used for educational purposes
+* Developers may also be consumers of software licences if they incorporate the software produced by others in their own work
+
+### Licence eco\-system
+
+* This is why software licensing is so important
+* Even if you don’t explicitly apply a licence yourself to the software you produce, you may still be affected by licences that are applied to other software that you depend on
+* In addition, even if you don’t apply a licence to your software, it doesn’t automatically mean that it will be treated as being in the public domain
+* In some jurisdictions, restrictions on the use or redistribution of a creative work, such as software, is automatic, so by not applying a licence you may be more restrictive than you mean to be
+
+### Cycles in Licensing
+
+* A further complication is that the licensing structure may contain cycles
+	* A simple example is the unit testing framework JUnit
+	* JUnit depends on the assertion framework Hamcrest
+	* Reciprocally, the Hamcrest framework uses JUnit as its unit test framework
+		* This means that the JUnit team must satisfy the licence conditions of Hamcrest and vice\-versa
+* Note that in this case, there isn’t a difficulty, as Hamcrest uses the permissive BSD licence and JUnit uses the Eclipse Public Licence
+
+### What can software licences be applied to?
+
+* Broadly speaking, a licence can be applied to just about any software artefact
+* The licence may refer to any of the associated artefacts in a software project
+* Note however, that not everything that might be covered in a licence will be applicable to all of the different kinds of artifact
+* Licences can be applied to: 
+	* Source code
+    * Binaries
+    * Documentation
+    * Outputs
+
+### Copyright
+
+* Copyright is a form of intellectual property \(other examples are trademarks and patents and is distinct from these\)
+* Copyright is the legal right to control the reproduction of a creative work for a limited period of time
+* The length of time varies between jurisdictions, but has typically increased to at least 50 years since the publication or authors death
+
+### Disasssembly and modification under copyright
+
+* A key concept in copyright is a derivation, since in many jurisdictions, such as the United Kingdom, a copyright holder is also entitled to the copyright on any derivative works
+* For the purposes of software, derivation is commonly thought to mean modifications to an existing source code base
+* Without specific authorisation in a licence, it is generally not permitted to attempt to make modifications to a copyrighted work
+	* In software terms, this is generally taken to mean actions like decompiling code and then making modifications to the source code
+* It is important to emphasis that copyright does not prevent copying, distribution and modification of a software artifact
+* It means that the original author has the right to decide under what conditions this may be done and document them in a licence to consumers
+
+### Contributors and copyright
+
+* Several different producers may make contributions to a single software artifact
+	* In this case, the copyright for the contributions may be held in the first instance by the contributor
+	* To handle for this, contributors can be asked to assign their copyright to the project’s owner
+	* This may be through a contract of employment, in the case of a commercial organisation
+* In the case of an open source project, the licence under which the original version of the source code is produced may require derivations \(i.e. contributions\) to be licensed under the same terms
+	* In this case, the licence may require copyright to be transferred to the original project author, or that the copyright becomes shared between all the contributors
+* In both cases the interests of the contributor \(and hence their incentive for participating in the project\) are protected, by ensuring that when they make a contribution under the licence they will continue to be able to access and redistribute the whole software system
+* One downside of having multiple copyright holders is that it may make protection of the copyright harder to defend
+
+### Different ways software may be incorporated in other software
+
+* Open source contribution is a particular example of derivation. There are others:
+	* If an existing work of source code \(P\) is incorporated into another source code base \(C\), then this may count as derivation
+		* Factors to consider are the extent to which the functionality of C is dependent on the functionality of \(P\)
+		* A single line of code producing a logging statement might not be considered derivation
+	* If an existing library is incorporated into a new project through some form of linking mechanism, then this may be considered derivation
+		* Again, this may depend on how dependent the linking program is on the library
+	* Some types of program may themselves be used to produce programs, or different representations of programs
+		* Sometimes these programs may incorporate portions of their own implementation in the generated program
+		* Obvious examples are compilers or parser generators
+		* In these cases, the generated program or representation may be considered a derived work
+		* Note that program outputs generally aren’t considered derived works
+		* Using an IDE to develop a new software application wouldn’t by itself make the software application a derived work of the IDE, unless it contained substantial material that originated in the IDE program
+
+### Copyleft and Incorporation
+
+* Given this potentially very general nature of derivation, it is worth noting that the terms of a software licence can also be transitive
+* This means that if a software artifact is incorporated into another software project, some or all of its licence conditions may also need be imposed on consumers of the incorporating software
+* This is sometimes referred to as viral licensing because licence terms may come to ‘infect’ software some distance away in the eco\-system
+
+### Warranties and liability
+
+* A warranty asserts the period of time in which a consumer can expect a product to function without exhibiting defects
+* Many FOSS licences \(and proprietary commercial\) assert that the software has no warranty, such that the cost of fixing any defects ultimately lies with the consumer
+* In practice many licences commit providers to supplying updates for a fixed period of time, that will fix defects that become apparent in the intervening period
+* Licences may also warrant that software performs as described in associated literature, such as advertising and permit consumers to seek redress if this is not the case
+
+* Liability clauses are the opposite of warranties. They state who is responsible \(and to what extent\) should provided software prove to be defective and cause damages
+* FOSS licences often assert that the consumer of a licence is responsible for any damages
+
+### Enforcement
+
+* It is important to realise that a software licence is an assertion of your expectations as to the use of your software, it isn’t an absolute rule
+* If you impose restrictions on the distribution, use or modification of your software, it doesn’t necessarily mean that they will automatically be obeyed
+* Licensors often have to take additional steps to enforce licence conditions
+* These can be broadly categorised as implementing technical measures to prevent a violation, or monitoring for violations and then seeking redress through a legal process of some form
+
+* The first approach for a producer is to implement technical mechanisms that are able to prevent a licence condition being breached
+* The nature of the technical measure will depend on what condition you are trying to guarantee, for example:
+	* Reproductions conditions might be enforced through the use of digital rights management hardware and software
+	* Making programs harder to modify by using just in time decryption and obfuscation techniques
+	* Preventing unauthorised usage through licence servers or subscription mechanisms
+* If seeking to enforce a licence through a legal or arbitration process of some form, the first issue is that you will need to know that a violation has occurred
+* Again, technical measures may help here, depending on the licence condition that you are seeking to enforce, for example through detecting unauthorised distribution using file sharing monitoring and finger printing technologies
+
+### Reputational Issues
+
+* Licence conditions or enforcement mechanisms that are unreasonable may cause reputational damage:
+	* Software licences may require uses to provide access to extensive personal information stored on the same device, or even access to accounts for services
+		* This information is often valuable and part of the business model for the provider, but may cause reputational harm if widely reported
+	* It may be tempting to deny updates of software to end users who violate the licence conditions, e.g. by not paying a fee
+		* However, this is risky for two reasons. One is that the software used to determine whether a licence has been procured or not may be defective, meaning legitimate users are denied the update
+		* Perhaps more importantly, if the update addresses a security vulnerability it means that not all running instances of the software are patched
+		* This leaves the user base as a whole more vulnerable to attack
+	* It may be tempting to install monitoring software on an end users device, or software that actively prevents them from violating the terms of the licence by modifying or disabling other software
+		* This is likely to annoy legitimate users who may have good reason for the functionality
+		* In addition, it may expose their devices to vulnerabilities created by the monitoring software
+	* Legal redress may well be effective if the parties to a case are both large organisations with significant resources
+
+### Considerations when choosing a licence for your software
+
+* Ultimately, licences are a means of maximising benefit to a distributor of software by controlling what uses others can make of it
+* However, the more restrictions that are placed on the use of a software project, the less attractive the proposition becomes for the consumer
+* In addition, the more onerous the restrictions, the more likely it is that violations will occur \(thus requiring additional investment in enforcement on the behalf of the provider\)
+* Selection of a licence is therefore a trade\-off between the desire to make a product attractive to consumers, being permissive in ways that might risk the viability of the business model and the ability of the distributor to enforce any conditions
+
+* What are the risks of using your software?
+* What restrictions do you want to impose on legitimate use?
+* What warranties are your required to offer?
+
+
+
+* How well equipped are you to continue to develop your software?
+* Do you want to encourage others to make contributions to your software?
+    * Who will they be? What capability are you looking for?
+    * What incentives can you offer?
+* What are the dependencies for your software?
+    * What are their dependencies?
+    * What licences have the distributors applied to them?
+    * How rigorous have the immediate distributors been in asking this question?
+
+* What are the threats to your business model?
+* What will be the public perception of your licence?
+* Are your licence conditions enforcable through legal action?
+* How well equipped are you to enforce the conditions of the licence?
+
+### Example Licences
+
+* Creative Commons
+* BSD Licence
+* Eclipse Public Licence
+* \[GNU General Public Licences\]
+* Microsoft Windows 10 EULA
+* mac OS Catalina
+
+### Creative Commons Licence
+
+* The creative commons publish a number of different licences suited to different needs. 
+* These licences mix four different properties
+	* Attribution means that a consumer should acknowledge the contribution of the licensed work
+	* ShareAlike imposes a condition similar to copyleft
+	* NoDerivs prevents the creation of derivative works
+	* Non Commercial only permits the licensed work to be used in the creation of non\-commercial works
+
+These properties are combined into licences, for example attribution\-sharealike.
+
+### GNU General Public Licence
+
+* Version 1 and 2 of the GPL are relatively short documents
+* The goal of the licence is to incentivise sharing and contributions to FOSS projects, by ensuring that the resulting artifacts remain in the public domain, as well as limiting liability and warranty as far as is possible
+* The V3 of the licence reflects the growing complexity of the legal landscape for software licensing, being much longer than the earlier iterations
+* In addition, variations of the GPL exist to handle for specific circumstances
+* For example, the LGPL has a weaker notion of copyleft enabling consumers to link their code to LGPL artifacts without imposing the condition that the linking software must be distributed under the same conditions
+* This enables proprietary software to make use of shared libraries for example
+* The exception in the Bison and GCC licences are similar, allowing proprietary programs to be compiled with artifacts from these tools without incurring GPL obligations
+
+### Caveats
+
+* Interpretation
+* Technological evolution
+* Jurisdiction
+
