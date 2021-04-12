@@ -2211,3 +2211,68 @@ These properties are combined into licences, for example attribution\-sharealike
 * Technological evolution
 * Jurisdiction
 
+## Week 24
+
+Growth Engineering: Techniques for systematically introducing a new product idea into a large\-scale market and driving it to scale
+
+* Product Development
+	* Create high\-quality software
+	* Engineer large\-scale software
+	* Give customers what they want
+* Growth Engineering
+	* New product idea
+	* No customers yet
+	* Create and grow a product in a new market
+
+### Properties of Growth Engineering
+
+#### Growth Engineering creates and exploits Compounding Growth effects
+
+* Cycle between:
+	* Users attract other people to consider the product 
+	* Some of those people become new users
+
+#### The user journey
+
+* Cycle:
+	* Acquire \-\> Activate \-\> Retain \[Monetize\]
+	* Refer new users
+
+#### Putting the Growth Model Together
+
+* Use Linear Marketing to attract initial and further users
+* Optimise user journey
+* Generate referrals For Compounding Growth
+
+## Week 25
+
+*Retention is the foundation of Compounding Growth*
+
+* We cannot monetize if the product is not used
+* Without prior users we cannot compound growth
+	* The set of prior users forms a baseline for the next period of growth
+* Registered users are different to active users
+	* Registered users is a dangerous metric
+
+* Zero churn : no active users leave  
+	* Rise in users then tops out due to finite market
+* _n_% churn : each time period _n_% of users become inactive
+	* Slow decline so not underdesirable 
+* \>30% churn: Steep decline 'jumping the shark'
+	* Retention needed, if ignored total loss of user base can occur
+
+cohort : all new users in a particular period
+
+* Level retention\-cohort graph : Viable business
+* Slow declining retention\-cohort graph : Work to be done
+* Continuously declining retention\-cohort graph : Heading for failure
+
+*Retention is a trend not a number*
+
+* Initial period of retention\-cohort graph coresponds to activation stage of user journey 
+* Poor retention in this stage implies work needed when users begin their journey with the product
+
+* Improving one stage in a growth loop has an effect on all others.
+
+
+
